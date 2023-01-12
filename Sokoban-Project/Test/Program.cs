@@ -56,6 +56,12 @@ namespace Sokoban
             //박스가 들어간 골을 저장하기 위한 변수
             bool[] goalIn = new bool[GOAL_COUNT];
 
+            void Render(int x, int y, string symbolString)
+            {
+                Console.SetCursorPosition(x, y);
+                Console.Write(symbolString);
+            }
+
             while (true)
             {
                 //Render------------------------------------------------------------
@@ -66,6 +72,7 @@ namespace Sokoban
                 {
                     int wallX = wallPositionX[wallCount];
                     int wallY = wallPositionY[wallCount];
+                    Render(wallX, wallY, "⎕");
                     Console.SetCursorPosition(wallX, wallY);
                     Console.Write("⎕");
                 }
@@ -150,18 +157,22 @@ namespace Sokoban
                         {
                             case Direction.Left:
                                 boxX = Math.Max(playerX - 1, MAP_MIN_X);
+                                playerX = boxX + 1;
                                 break;
 
                             case Direction.Right:
                                 boxX = Math.Min(playerX + 1, MAP_MAX_X);
+                                playerX = boxX - 1;
                                 break;
 
                             case Direction.Up:
                                 boxY = Math.Max(playerY - 1, MAP_MIN_X);
-                                    break;
+                                playerY = boxY + 1;
+                                break;
 
                             case Direction.Down:
                                 boxY = Math.Min(playerY + 1, MAP_MAX_Y);
+                                playerY = boxY - 1;
                                 break;
 
                             case Direction.None:
@@ -221,8 +232,8 @@ namespace Sokoban
                             switch (playerDirection)
                             {
                                 case Direction.Left:
-                                    boxX += 1;
-                                    playerX +=1;
+                                    boxX = wallX + 1;
+                                    playerX = boxX + 1;
                                     break;
 
                                 case Direction.Right:
@@ -245,10 +256,12 @@ namespace Sokoban
                                     Console.WriteLine("[Error]플레이어 이동방향 데이터가 잘못 되었습니다");
                                     break;
                             }
+                            boxPositionX[boxId] = boxX;
+                            boxPositionY[boxId] = boxY;
+                            break;
                         }
-                        boxPositionX[boxId] = boxX;
-                        boxPositionY[boxId] = boxY;
-                        break;
+                                      
+                        
                     }
                 }
                 
