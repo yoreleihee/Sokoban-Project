@@ -2,7 +2,7 @@
 
 namespace Sokoban
 {
-    enum Direction
+    internal enum Direction
     {
         None,
         Left,
@@ -11,12 +11,12 @@ namespace Sokoban
         Down
     }
 
-    class Player
-    {
-        private int _x; //수정하거나 접근할 수 있는 데이터를 저장
-        private int _y;
-        private string _icon;
-        private Direction _moveDirection;
+    //class Player
+    //{
+    //    private int _x; //수정하거나 접근할 수 있는 데이터를 저장
+    //    private int _y;
+    //    private string _icon;
+    //    private Direction _moveDirection;
 
         // 생성자 문법
         // ㄴ반환 타입이 없다.
@@ -25,61 +25,61 @@ namespace Sokoban
         // 기본 생성자는 프로그래머가 생성자를 작성하지 않은 경우 컴파일러가 알아서 생성한다.
 
         // 내가 필요한 데이터를 초기화해준다.
-        public Player()
-        {
-            _x = 1;
-            _y = 1;
-            _icon = "☻";
-            _moveDirection = Direction.None;
-        }
+    //    public Player()
+    //    {
+    //        _x = 1;
+    //        _y = 1;
+    //        _icon = "☻";
+    //        _moveDirection = Direction.None;
+    //    }
 
-        //접근자(Getter) & 설정자(Setter)
-        //접근자 : 데이터에 접근하는 메소드
-        //설정자 : 데이터를 설정하는 메소드
-        public int GetX() => _x;
-        public int GetY() => _y;
-        //public string GetIcon() => _icon; 수정할 필요가 없으므로?
-        public Direction GetDirection() => _moveDirection;
+    //    //접근자(Getter) & 설정자(Setter)
+    //    //접근자 : 데이터에 접근하는 메소드
+    //    //설정자 : 데이터를 설정하는 메소드
+    //    public int GetX() => _x;
+    //    public int GetY() => _y;
+    //    //public string GetIcon() => _icon; 수정할 필요가 없으므로?
+    //    public Direction GetDirection() => _moveDirection;
 
-        public void SetX(int newX) => _x = newX;
-        public void SetY(int newY) => _y = newY;
+    //    public void SetX(int newX) => _x = newX;
+    //    public void SetY(int newY) => _y = newY;
 
-        /// <summary>
-        /// 플레이어를 그린다.
-        /// </summary>
-        public void Render()
-        {
-            Console.SetCursorPosition(_x, _y);
-            Console.Write(_icon);
-        }
-        /// <summary>
-        /// 플레이어를 움직인다.
-        /// </summary>
-        /// <param name="key">사용자가 입력한 키</param>
-        public void Move(ConsoleKey key)
-        {
-            if (key == ConsoleKey.LeftArrow)
-            {
-                _x = Math.Max(1, _x - 1);
-                _moveDirection = Direction.Left;
-            }
-            if (key == ConsoleKey.RightArrow)
-            {
-                _x = Math.Min(_x + 1, 19);
-                _moveDirection = Direction.Right;
-            }
-            if (key == ConsoleKey.UpArrow)
-            {
-                _y = Math.Max(1, _y - 1);
-                _moveDirection = Direction.Up;
-            }
-            if (key == ConsoleKey.DownArrow)
-            {
-                _y = Math.Min(_y + 1, 9);
-                _moveDirection = Direction.Down;
-            }
-        }
-    }
+    //    /// <summary>
+    //    /// 플레이어를 그린다.
+    //    /// </summary>
+    //    public void Render()
+    //    {
+    //        Console.SetCursorPosition(_x, _y);
+    //        Console.Write(_icon);
+    //    }
+    //    /// <summary>
+    //    /// 플레이어를 움직인다.
+    //    /// </summary>
+    //    /// <param name="key">사용자가 입력한 키</param>
+    //    public void Move(ConsoleKey key)
+    //    {
+    //        if (key == ConsoleKey.LeftArrow)
+    //        {
+    //            _x = Math.Max(1, _x - 1);
+    //            _moveDirection = Direction.Left;
+    //        }
+    //        if (key == ConsoleKey.RightArrow)
+    //        {
+    //            _x = Math.Min(_x + 1, 19);
+    //            _moveDirection = Direction.Right;
+    //        }
+    //        if (key == ConsoleKey.UpArrow)
+    //        {
+    //            _y = Math.Max(1, _y - 1);
+    //            _moveDirection = Direction.Up;
+    //        }
+    //        if (key == ConsoleKey.DownArrow)
+    //        {
+    //            _y = Math.Min(_y + 1, 9);
+    //            _moveDirection = Direction.Down;
+    //        }
+    //    }
+    //}
 
     class Wall
     {
@@ -116,8 +116,8 @@ namespace Sokoban
 
         public Box()
         {
-            _x = 1;
-            _y = 1;
+            _x = 7;
+            _y = 7;
             _icon = "✦";
         }
 
@@ -153,7 +153,7 @@ namespace Sokoban
         public int GetY() => _y;
 
         public void Render()
-        {            
+        {
             Console.SetCursorPosition(_x, _y);
             Console.Write(_iconGoal);
         }
@@ -163,13 +163,7 @@ namespace Sokoban
     {
         static void Main()
         {
-            // 초기 세팅
-            Console.ResetColor();
-            Console.CursorVisible = false;
-            Console.Title = "Huiji_Sokoban";
-            // 맥 backgroundColor 실화냐
-            Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.Clear();
+            
 
             // 기호 상수 정의
             const int WALL_COUNT = 4;
@@ -187,10 +181,17 @@ namespace Sokoban
             Wall wall = new Wall();
 
             // 박스 생성자
+            
             Box box = new Box();
 
+            // goal 생성자
             Goal goal = new Goal();
-            
+
+            //Render class
+            Renderer renderer = new Renderer();
+
+            Game game = new Game();
+            game.Initialize();
 
             // 박스 초기 위치설정
             //int[] boxPositionX = { 5, 7, 15 };
@@ -213,18 +214,22 @@ namespace Sokoban
             //박스가 들어간 골을 저장하기 위한 변수
             bool[] goalIn = new bool[GOAL_COUNT];
 
-            
+
 
             while (true)
             {
                 //Render------------------------------------------------------------
-                Render();            
+                Render();
+                
+               
 
                 //Process Input-----------------------------------------------------
                 ConsoleKey key = Console.ReadKey().Key;
                 //Update------------------------------------------------------------
 
                 Update(key);
+
+                
 
 
                 // 박스와 골의 처리
@@ -236,8 +241,6 @@ namespace Sokoban
 
                     for (int boxId = 0; boxId < BOX_COUNT; ++boxId)
                     {
-
-
                         if (Iscollided(box.GetX(), box.GetY(), goal.GetX(), goal.GetY()))
                         {
                             goalIn[goalId] = true;
@@ -272,13 +275,14 @@ namespace Sokoban
 
                 for (int MapX = 0; MapX <= 20; ++MapX)
                 {
-                    RenderObject(MapX, 0, "⎕");
-                    RenderObject(MapX, 10, "⎕");
+                    renderer.Render(MapX, 0, "⎕");
+                    renderer.Render(MapX, 10, "⎕");
+                    
                 }
                 for (int MapY = 1; MapY < 10; ++MapY)
                 {
-                    RenderObject(0, MapY, "⎕");
-                    RenderObject(20, MapY, "⎕");
+                    renderer.Render(0, MapY, "⎕");
+                    renderer.Render(20, MapY, "⎕");                    
                 }
 
                 // box 출력
@@ -301,26 +305,14 @@ namespace Sokoban
                 //}
                 goal.Render();
 
-                // 플레이어 출력
-                //RenderObject(playerX, playerY, "☻"); 밑의 구문으로 대
-                player.Render();
-
-                
+                // 플레이어 출력                
+                renderer.Render(player.GetX(), player.GetY(), player.GetSymbol());
             }
 
-            // 오브젝트를 그린다.
-            void RenderObject(int x, int y, string symbolString)
-            {
-                Console.SetCursorPosition(x, y);
-                Console.Write(symbolString);
-            }
-
-            
             //Update
             void Update(ConsoleKey key)
             {
-                //player 이동                
-                //MovePlayer(key, ref playerX, ref playerY, ref playerDirection); 밑의 구문으로 대</param>
+                //player 이동                               
                 player.Move(key);
 
                 //player가 박스를 밀때
@@ -335,27 +327,27 @@ namespace Sokoban
                     }
                     switch (player.GetDirection())
                     {
-                        case Direction.Left:
+                        case Player.Direction.Left:
                             box.SetX(Math.Max(box.GetX() - 1, MAP_MIN_X));
                             player.SetX(box.GetX() + 1);
                             break;
 
-                        case Direction.Right:
+                        case Player.Direction.Right:
                             box.SetX(Math.Min(player.GetX() + 1, MAP_MAX_X));
                             player.SetX(box.GetX() - 1);
                             break;
 
-                        case Direction.Up:
+                        case Player.Direction.Up:
                             box.SetY(Math.Max(player.GetY() - 1, MAP_MIN_X));
                             player.SetY(box.GetY() + 1);
                             break;
 
-                        case Direction.Down:
+                        case Player.Direction.Down:
                             box.SetY(Math.Min(player.GetY() + 1, MAP_MAX_Y));
                             player.SetY(box.GetY() - 1);
                             break;
 
-                        case Direction.None:
+                        case Player.Direction.None:
                             Console.Clear();
                             Console.WriteLine("[Error]플레이어 이동방향 데이터가 잘못 되었습니다.");
                             break;
@@ -377,23 +369,23 @@ namespace Sokoban
                     }
                     switch (player.GetDirection())
                     {
-                        case Direction.Left:
+                        case Player.Direction.Left:
                             player.SetX(wall.GetX() + 1);
                             break;
 
-                        case Direction.Right:
+                        case Player.Direction.Right:
                             player.SetX(wall.GetX() - 1);
                             break;
 
-                        case Direction.Up:
+                        case Player.Direction.Up:
                             player.SetY(wall.GetY() + 1);
                             break;
 
-                        case Direction.Down:
+                        case Player.Direction.Down:
                             player.SetY(wall.GetY() - 1);
                             break;
 
-                        case Direction.None:
+                        case Player.Direction.None:
                             Console.Clear();
                             Console.WriteLine("플레이어 이동방향 데이터가 잘못 되었습니다.");
                             break;
@@ -412,27 +404,27 @@ namespace Sokoban
 
                     switch (player.GetDirection())
                     {
-                        case Direction.Left:
+                        case Player.Direction.Left:
                             box.SetX(wall.GetX() + 1);
                             player.SetX(box.GetX() + 1);
                             break;
 
-                        case Direction.Right:
+                        case Player.Direction.Right:
                             box.SetX(wall.GetX() - 1);
                             player.SetX(box.GetX() - 1);
                             break;
 
-                        case Direction.Up:
+                        case Player.Direction.Up:
                             box.SetY(wall.GetY() + 1);
                             player.SetY(box.GetY() + 1);
                             break;
 
-                        case Direction.Down:
+                        case Player.Direction.Down:
                             box.SetY(wall.GetY() - 1);
                             player.SetY(box.GetY() - 1);
                             break;
 
-                        case Direction.None:
+                        case Player.Direction.None:
                             Console.Clear();
                             Console.WriteLine("[Error]플레이어 이동방향 데이터가 잘못 되었습니다");
                             return;
@@ -480,7 +472,7 @@ namespace Sokoban
                 //    }
                 //}
             }
-            
+
             //두 물체가 충돌했는지 판별한다.
             bool Iscollided(int x1, int y1, int x2, int y2)
             {
